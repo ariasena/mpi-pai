@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Interaktif Tajwid: Alif Lam Syamsiyah & Qomariyah - Kelas 7 SMP</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & Amiri for Arabic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                        },
+                        amber: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        },
+                        qomariyah: {
+                            light: '#e0f2fe',
+                            main: '#0284c7',
+                            dark: '#0369a1'
+                        },
+                        syamsiyah: {
+                            light: '#fef3c7',
+                            main: '#d97706',
+                            dark: '#b45309'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        arabic: ['"Amiri"', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .arabic-text {
+            font-family: 'Amiri', serif;
+            line-height: 2.2;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        @keyframes pulse-subtle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+        .animate-pulse-subtle {
+            animation: pulse-subtle 3s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="h-full font-sans text-slate-800 antialiased flex flex-col justify-between selection:bg-emerald-200">
+
+    <script>
+        // Web Audio API Synthesizer for Touch/Click Feedback without external files
+        const SoundFX = {
+            ctx: null,
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            },
+            playClick() {
+                this.init();
+                if (this.ctx.state === 'suspended') this.ctx.resume();
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(400, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(800, this.ctx.currentTime + 0.05);
+                gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.05);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.05);
+            },
+            playCorrect() {
+                this.init();
+                if (this.ctx.state === 'suspended') this.ctx.resume();
+                const now = this.ctx.currentTime;
+                const notes = [523.25, 659.25, 783.99]; // C5, E5, G5
+                notes.forEach((freq, i) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.value = freq;
+                    gain.gain.setValueAtTime(0.15, now + i * 0.08);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.25);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(now + i * 0.08);
+                    osc.stop(now + i * 0.08 + 0.25);
+                });
+            },
+            playWrong() {
+                this.init();
+                if (this.ctx.state === 'suspended') this.ctx.resume();
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(220, now);
+                osc.frequency.setValueAtTime(180, now + 0.1);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start(now);
+                osc.stop(now + 0.25);
+            }
+        };
+    </script>
+
+    <!-- Top Header -->
+    <header class="bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 sm:h-20">
+                <!-- Branding -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-emerald-500/30 rounded-xl flex items-center justify-center border border-emerald-300/40 shadow-inner">
+                        <i class="fa-solid font-arabic text-2xl text-emerald-200">ال</i>
+                    </div>
+                    <div>
+                        <h1 class="text-base sm:text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                            <span>Tajwid Interaktif</span>
+                            <span class="text-xs font-semibold px-2 py-0.5 bg-amber-400 text-emerald-950 rounded-full shadow-sm">Kelas 7 SMP</span>
+                        </h1>
+                        <p class="text-xs text-emerald-100/80 hidden sm:block">Mengenal Hukum Bacaan Alif Lam (ال) Syamsiyah & Qomariyah</p>
+                    </div>
+                </div>
+
+                <!-- Utilities Header -->
+                <div class="flex items-center space-x-2">
+                    <button onclick="toggleSound()" id="soundBtn" class="p-2 sm:px-3 sm:py-2 rounded-lg bg-emerald-700/60 hover:bg-emerald-600/80 text-emerald-100 text-xs sm:text-sm font-medium transition flex items-center gap-2 border border-emerald-600/50" title="Matikan/Hidupkan Suara">
+                        <i class="fa-solid fa-volume-high" id="soundIcon"></i>
+                        <span class="hidden md:inline" id="soundText">Suara: On</span>
+                    </button>
+                    <button onclick="toggleFullScreen()" class="p-2 sm:px-3 sm:py-2 rounded-lg bg-emerald-700/60 hover:bg-emerald-600/80 text-emerald-100 text-xs sm:text-sm font-medium transition flex items-center gap-2 border border-emerald-600/50" title="Layar Penuh (Cocok untuk PID/Proyektor)">
+                        <i class="fa-solid fa-expand"></i>
+                        <span class="hidden md:inline">Layar Penuh</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <nav class="bg-emerald-900/60 border-t border-emerald-600/30 backdrop-blur-sm overflow-x-auto custom-scrollbar">
+            <div class="max-w-7xl mx-auto px-2 sm:px-6 flex space-x-1 sm:space-x-2 min-w-max">
+                <button onclick="switchTab('beranda')" id="tab-beranda" class="nav-tab px-4 py-3 text-xs sm:text-sm font-medium rounded-t-lg transition flex items-center gap-2 border-b-2 border-transparent text-emerald-100 hover:text-white hover:bg-emerald-800/40">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Beranda</span>
+                </button>
+                <button onclick="switchTab('materi')" id="tab-materi" class="nav-tab px-4 py-3 text-xs sm:text-sm font-medium rounded-t-lg transition flex items-center gap-2 border-b-2 border-transparent text-emerald-100 hover:text-white hover:bg-emerald-800/40">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span>Konsep & Materi</span>
+                </button>
+                <button onclick="switchTab('huruf')" id="tab-huruf" class="nav-tab px-4 py-3 text-xs sm:text-sm font-medium rounded-t-lg transition flex items-center gap-2 border-b-2 border-transparent text-emerald-100 hover:text-white hover:bg-emerald-800/40">
+                    <i class="fa-solid fa-icons"></i>
+                    <span>Eksplorasi Huruf Hijaiyah</span>
+                </button>
+                <button onclick="switchTab('klasifikasi')" id="tab-klasifikasi" class="nav-tab px-4 py-3 text-xs sm:text-sm font-medium rounded-t-lg transition flex items-center gap-2 border-b-2 border-transparent text-emerald-100 hover:text-white hover:bg-emerald-800/40">
+                    <i class="fa-solid fa-gamepad"></i>
+                    <span>Gim Sortir Kata</span>
+                </button>
+                <button onclick="switchTab('kuis')" id="tab-kuis" class="nav-tab px-4 py-3 text-xs sm:text-sm font-medium rounded-t-lg transition flex items-center gap-2 border-b-2 border-transparent text-emerald-100 hover:text-white hover:bg-emerald-800/40">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    <span>Kuis Evaluasi</span>
+                </button>
+                <button onclick="switchTab('quran')" id="tab-quran" class="nav-tab px-4 py-3 text-xs sm:text-sm font-medium rounded-t-lg transition flex items-center gap-2 border-b-2 border-transparent text-emerald-100 hover:text-white hover:bg-emerald-800/40">
+                    <i class="fa-solid fa-quran"></i>
+                    <span>Analisis Ayat</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
+
+        <!-- ================= TAB 1: BERANDA ================= -->
+        <section id="content-beranda" class="tab-content space-y-6 hidden">
+            <!-- Hero Banner -->
+            <div class="bg-gradient-to-br from-emerald-600 via-teal-700 to-emerald-800 rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 opacity-10 font-arabic text-[220px] pointer-events-none select-none">
+                    الشَّمْسُ
+                </div>
+                <div class="relative z-10 max-w-3xl space-y-4">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/30 rounded-full border border-emerald-300/30 text-xs sm:text-sm font-medium text-emerald-100 backdrop-blur-md">
+                        <i class="fa-solid fa-star text-amber-300"></i>
+                        <span>Pendidikan Agama Islam & Budi Pekerti</span>
+                    </div>
+                    <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
+                        Mari Kuasai Tajwid: Membedakan Hukum Bacaan Alif Lam (ال)
+                    </h2>
+                    <p class="text-sm sm:text-base text-emerald-100/90 leading-relaxed">
+                        Selamat datang dalam media pembelajaran interaktif PAI Kelas 7! Melalui media ini, kamu akan mempelajari kaidah pembacaan <span class="font-bold underline decoration-amber-400">Alif Lam Qomariyah</span> dan <span class="font-bold underline decoration-amber-400">Alif Lam Syamsiyah</span> dengan cara yang menyenangkan, visual, dan penuh tantangan.
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-3">
+                        <button onclick="switchTab('materi')" class="px-6 py-3 bg-amber-400 hover:bg-amber-300 text-emerald-950 font-bold rounded-xl shadow-lg transition flex items-center gap-2 transform active:scale-95">
+                            <span>Mulai Belajar</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                        <button onclick="switchTab('klasifikasi')" class="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl border border-white/20 transition flex items-center gap-2 backdrop-blur-md">
+                            <i class="fa-solid fa-gamepad"></i>
+                            <span>Main Gim Latihan</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Objectives & Indicator Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Learning Objectives -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 hover:shadow-md transition">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-bullseye text-lg"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800">Tujuan Pembelajaran</h3>
+                    </div>
+                    <ul class="space-y-3 text-sm text-slate-600">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-circle-check text-emerald-500 mt-1 flex-shrink-0"></i>
+                            <span>Peserta didik mampu **membedakan** hukum bacaan *Alif Lam Syamsiyah* dan *Alif Lam Qomariyah* secara tepat.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-circle-check text-emerald-500 mt-1 flex-shrink-0"></i>
+                            <span>Peserta didik mampu **menunjukkan contoh-contoh** lafal hukum bacaan *Alif Lam Syamsiyah* dan *Qomariyah* dalam ayat Al-Qur'an.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-circle-check text-emerald-500 mt-1 flex-shrink-0"></i>
+                            <span>Peserta didik mampu **menerapkan** cara membaca *Alif Lam* dengan jelas (*Idzhar*) atau melebur (*Idgham*) saat membaca Al-Qur'an.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Petunjuk Penggunaan -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 hover:shadow-md transition">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-compass text-lg"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800">Petunjuk Penggunaan Aplikasi</h3>
+                    </div>
+                    <ol class="space-y-3 text-sm text-slate-600 list-decimal list-inside">
+                        <li class="leading-relaxed"><strong class="text-slate-800">Menu Konsep & Materi:</strong> Pelajari definisi, perbedaan cara baca, dan tanda harakatnya.</li>
+                        <li class="leading-relaxed"><strong class="text-slate-800">Eksplorasi Huruf:</strong> Tekan/klik huruf Hijaiyah untuk melihat pembagian kelompoknya.</li>
+                        <li class="leading-relaxed"><strong class="text-slate-800">Gim & Kuis:</strong> Uji pemahamanmu lewat permainan sortir dan kuis ber-skor!</li>
+                        <li class="leading-relaxed"><strong class="text-slate-800">Penggunaan di Kelas:</strong> Media ini cocok dipakai di **PID (Papan Interaktif Digital)**, **HP**, atau ditayangkan via **Proyektor**.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 2: KONSEP & MATERI ================= -->
+        <section id="content-materi" class="tab-content space-y-6 hidden">
+            <!-- Header section -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80">
+                <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2 mb-2">
+                    <i class="fa-solid fa-book-open text-emerald-600"></i>
+                    <span>Memahami Hukum Bacaan Alif Lam (ال)</span>
+                </h2>
+                <p class="text-sm text-slate-600">
+                    Kata sambung <strong>"Alif Lam" (ال)</strong> atau <em>Al-Ta'rif</em> dalam Bahasa Arab yang menempel pada kata benda (Isim) terbagi menjadi 2 hukum bacaan berdasarkan huruf yang mengikutinya.
+                </p>
+            </div>
+
+            <!-- Comparison Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Alif Lam Qomariyah Card -->
+                <div class="bg-gradient-to-b from-sky-50 to-white rounded-2xl p-6 border-2 border-sky-200 shadow-sm relative overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-2xl bg-sky-500 text-white flex items-center justify-center text-2xl shadow-md">
+                                    <i class="fa-solid fa-moon"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-sky-950">Alif Lam Qomariyah</h3>
+                                    <span class="text-xs font-semibold px-2.5 py-0.5 bg-sky-100 text-sky-800 rounded-full">إِظْهَار قَمَرِي (Idzhar Qomari)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Meaning & Analogy -->
+                        <div class="space-y-3 text-sm text-slate-700">
+                            <p>
+                                <strong>Kata Kunci:</strong> <em>Qomar</em> (قَمَر) artinya <strong>Bulan</strong>.
+                            </p>
+                            <p class="bg-white p-3 rounded-xl border border-sky-100 shadow-xs">
+                                Seperti bintang yang tetap terlihat jelas di samping bulan, huruf <strong>Lam (ل)</strong> dibaca dengan <strong>CLEAR / JELAS (Sukun)</strong>.
+                            </p>
+
+                            <!-- Characteristics -->
+                            <div class="space-y-2 pt-2">
+                                <h4 class="font-bold text-sky-900 text-xs uppercase tracking-wider">Ciri-Ciri Utama:</h4>
+                                <ul class="space-y-1.5 text-xs sm:text-sm">
+                                    <li class="flex items-center gap-2">
+                                        <i class="fa-solid fa-check text-sky-600"></i>
+                                        <span>Huruf Lam berharakat <strong>Sukun ( ْ )</strong></span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <i class="fa-solid fa-check text-sky-600"></i>
+                                        <span>Suara "L" terdengar jelas dan terang.</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <i class="fa-solid fa-check text-sky-600"></i>
+                                        <span>Jumlah hurufnya ada <strong>14 huruf</strong>.</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- Example Box -->
+                            <div class="mt-4 p-4 bg-sky-100/70 rounded-xl border border-sky-200">
+                                <span class="text-xs font-bold text-sky-800 uppercase block mb-1">Contoh Bacaan:</span>
+                                <div class="flex items-center justify-between">
+                                    <span class="arabic-text text-3xl font-bold text-sky-950">اَلْقَمَرُ</span>
+                                    <div class="text-right">
+                                        <div class="font-bold text-slate-800 text-sm">Al-Qamaru</div>
+                                        <div class="text-xs text-slate-600">Huruf Lam (لْ) dibaca jelas</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mnemonic formula -->
+                    <div class="mt-5 pt-3 border-t border-sky-200/60 text-xs text-sky-900">
+                        <strong class="block mb-1">Rumus Hafalan Huruf Qomariyah:</strong>
+                        <span class="arabic-text text-base font-bold text-sky-950 block bg-white px-3 py-1 rounded-lg text-center border border-sky-200">
+                            اِبْغِ حَجَّكَ وَخَفْ عَقِيْمَهُ
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Alif Lam Syamsiyah Card -->
+                <div class="bg-gradient-to-b from-amber-50 to-white rounded-2xl p-6 border-2 border-amber-200 shadow-sm relative overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center text-2xl shadow-md">
+                                    <i class="fa-solid fa-sun"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-amber-950">Alif Lam Syamsiyah</h3>
+                                    <span class="text-xs font-semibold px-2.5 py-0.5 bg-amber-100 text-amber-800 rounded-full">إِدْغَام شَمْسِي (Idgham Syamsi)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Meaning & Analogy -->
+                        <div class="space-y-3 text-sm text-slate-700">
+                            <p>
+                                <strong>Kata Kunci:</strong> <em>Syams</em> (شَمْس) artinya <strong>Matahari</strong>.
+                            </p>
+                            <p class="bg-white p-3 rounded-xl border border-amber-100 shadow-xs">
+                                Seperti bintang yang samar/hilang tersinar silau matahari, huruf <strong>Lam (ل)</strong> dibaca <strong>LEBUR / MASUK (Idgham)</strong> ke huruf berikutnya.
+                            </p>
+
+                            <!-- Characteristics -->
+                            <div class="space-y-2 pt-2">
+                                <h4 class="font-bold text-amber-900 text-xs uppercase tracking-wider">Ciri-Ciri Utama:</h4>
+                                <ul class="space-y-1.5 text-xs sm:text-sm">
+                                    <li class="flex items-center gap-2">
+                                        <i class="fa-solid fa-check text-amber-600"></i>
+                                        <span>Huruf setelah Lam menggunakan tanda <strong>Tasydid / Shaddah ( ّ )</strong></span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <i class="fa-solid fa-check text-amber-600"></i>
+                                        <span>Suara "L" dilebur / tidak diucapkan.</span>
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <i class="fa-solid fa-check text-amber-600"></i>
+                                        <span>Jumlah hurufnya ada <strong>14 huruf</strong>.</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- Example Box -->
+                            <div class="mt-4 p-4 bg-amber-100/70 rounded-xl border border-amber-200">
+                                <span class="text-xs font-bold text-amber-800 uppercase block mb-1">Contoh Bacaan:</span>
+                                <div class="flex items-center justify-between">
+                                    <span class="arabic-text text-3xl font-bold text-amber-950">اَلشَّمْسُ</span>
+                                    <div class="text-right">
+                                        <div class="font-bold text-slate-800 text-sm">Ash-Shamsu</div>
+                                        <div class="text-xs text-slate-600">Huruf Lam dianggap tidak ada</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mnemonic note -->
+                    <div class="mt-5 pt-3 border-t border-amber-200/60 text-xs text-amber-900">
+                        <strong class="block mb-1">Ciri Visual di Mushaf:</strong>
+                        <span class="block bg-white px-3 py-1.5 rounded-lg text-center border border-amber-200 font-medium">
+                            Huruf Lam tidak bertanda sukun, dan huruf depannya memiliki Tasydid ( ّ ).
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison Table Summary -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 overflow-x-auto">
+                <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-table-list text-emerald-600"></i>
+                    <span>Tabel Perbandingan Ringkas</span>
+                </h3>
+                <table class="w-full text-sm text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-100 text-slate-700 border-b border-slate-200">
+                            <th class="p-3 font-semibold">Poin Perbedaan</th>
+                            <th class="p-3 font-semibold text-sky-700 bg-sky-50/50">Alif Lam Qomariyah</th>
+                            <th class="p-3 font-semibold text-amber-700 bg-amber-50/50">Alif Lam Syamsiyah</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200">
+                        <tr>
+                            <td class="p-3 font-medium text-slate-800">Cara Membaca (Hukum)</td>
+                            <td class="p-3 text-slate-600 bg-sky-50/20">Idzhar (Terang / Jelas)</td>
+                            <td class="p-3 text-slate-600 bg-amber-50/20">Idgham (Dimasukkan / Dilebur)</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-medium text-slate-800">Bunyi 'L' (ل)</td>
+                            <td class="p-3 text-slate-600 bg-sky-50/20">Terdengar jelas ("Al-...")</td>
+                            <td class="p-3 text-slate-600 bg-amber-50/20">Hilang / Tidak dibaca</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-medium text-slate-800">Tanda Harakat Lam (ل)</td>
+                            <td class="p-3 text-slate-600 bg-sky-50/20">Ada tanda Sukun ( ْ )</td>
+                            <td class="p-3 text-slate-600 bg-amber-50/20">Tidak ada sukun (Polos)</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-medium text-slate-800">Tanda Huruf Setelahnya</td>
+                            <td class="p-3 text-slate-600 bg-sky-50/20">Harakat biasa (fathah/kasrah/dhommah)</td>
+                            <td class="p-3 text-slate-600 bg-amber-50/20">Menggunakan Tasydid / Shaddah ( ّ )</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ================= TAB 3: EKSPLORASI HURUF HIJAIYAH ================= -->
+        <section id="content-huruf" class="tab-content space-y-6 hidden">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-icons text-emerald-600"></i>
+                            <span>Peta 28 Huruf Hijaiyah</span>
+                        </h2>
+                        <p class="text-sm text-slate-600 mt-1">
+                            Klik atau sentuh huruf Hijaiyah di bawah ini untuk melihat klasifikasi hukum bacaannya beserta contoh kata.
+                        </p>
+                    </div>
+
+                    <!-- Filter buttons -->
+                    <div class="flex items-center gap-2 bg-slate-100 p-1 rounded-xl self-start sm:self-auto">
+                        <button onclick="filterLetters('all')" id="btn-filter-all" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white shadow-xs text-slate-800 transition">Semua (28)</button>
+                        <button onclick="filterLetters('qomariyah')" id="btn-filter-qomariyah" class="px-3 py-1.5 text-xs font-semibold rounded-lg text-sky-700 hover:bg-white/60 transition">Qomariyah (14)</button>
+                        <button onclick="filterLetters('syamsiyah')" id="btn-filter-syamsiyah" class="px-3 py-1.5 text-xs font-semibold rounded-lg text-amber-700 hover:bg-white/60 transition">Syamsiyah (14)</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Letter Grid -->
+            <div class="bg-slate-100 p-4 sm:p-6 rounded-2xl border border-slate-200">
+                <div id="hijaiyah-grid" class="grid grid-cols-4 sm:grid-cols-7 md:grid-cols-7 lg:grid-cols-14 gap-2 sm:gap-3">
+                    <!-- Dynamic Hijaiyah Buttons Generated via JS -->
+                </div>
+            </div>
+
+            <!-- Selected Letter Detail Box -->
+            <div id="letter-detail-box" class="bg-white rounded-2xl p-6 shadow-md border-2 border-emerald-500 transition-all">
+                <div class="flex flex-col md:flex-row items-center gap-6">
+                    <div id="detail-letter-badge" class="w-24 h-24 rounded-2xl bg-sky-500 text-white flex items-center justify-center font-arabic text-6xl shadow-lg flex-shrink-0">
+                        ا
+                    </div>
+                    <div class="space-y-2 text-center md:text-left flex-grow">
+                        <div class="flex flex-wrap items-center justify-center md:justify-start gap-2">
+                            <h3 id="detail-letter-name" class="text-2xl font-bold text-slate-800">Alif ( أ / ا )</h3>
+                            <span id="detail-type-badge" class="px-3 py-1 bg-sky-100 text-sky-800 font-bold text-xs rounded-full">
+                                Alif Lam Qomariyah
+                            </span>
+                        </div>
+                        <p id="detail-description" class="text-sm text-slate-600">
+                            Jika Alif Lam (ال) bertemu huruf Alif/Hamzah, maka hukum bacaannya adalah **Alif Lam Qomariyah**. Lam dibaca jelas.
+                        </p>
+                        <div class="pt-2 flex flex-wrap items-center justify-center md:justify-start gap-4">
+                            <div class="bg-slate-50 border border-slate-200 px-4 py-2 rounded-xl">
+                                <span class="text-xs text-slate-500 block">Contoh Lafal:</span>
+                                <span id="detail-arabic-example" class="arabic-text text-2xl font-bold text-emerald-800">اَلْأَرْضُ</span>
+                            </div>
+                            <div class="bg-slate-50 border border-slate-200 px-4 py-2 rounded-xl">
+                                <span class="text-xs text-slate-500 block">Cara Membaca / Transliterasi:</span>
+                                <span id="detail-latin-example" class="text-base font-bold text-slate-800">Al-Ardhu</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 4: GIM KLASIFIKASI (SORTIR KATA) ================= -->
+        <section id="content-klasifikasi" class="tab-content space-y-6 hidden">
+            <!-- Game Top Header & Scoreboard -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                        <i class="fa-solid fa-gamepad text-emerald-600"></i>
+                        <span>Gim Klasifikasi: Sortir Kata Tajwid</span>
+                    </h2>
+                    <p class="text-sm text-slate-600">
+                        Klik atau ketuk kata di bawah ini, lalu tentukan keranjang yang tepat! (Sangat seru untuk Papan Interaktif PID)
+                    </p>
+                </div>
+                <div class="flex items-center gap-4 bg-emerald-50 px-4 py-2 rounded-xl border border-emerald-200 self-start sm:self-auto">
+                    <div class="text-center">
+                        <span class="text-xs text-emerald-700 block font-medium">Skor Kamu</span>
+                        <span id="game-score" class="text-2xl font-extrabold text-emerald-800">0</span>
+                    </div>
+                    <div class="w-px h-8 bg-emerald-200"></div>
+                    <div class="text-center">
+                        <span class="text-xs text-emerald-700 block font-medium">Sisa Kata</span>
+                        <span id="game-remaining" class="text-2xl font-extrabold text-emerald-800">8</span>
+                    </div>
+                    <button onclick="resetSortingGame()" class="p-2 text-emerald-700 hover:text-emerald-900 transition" title="Ulangi Permainan">
+                        <i class="fa-solid fa-rotate-right text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Active Word Container -->
+            <div id="active-word-card" class="bg-gradient-to-r from-emerald-600 to-teal-700 rounded-3xl p-8 text-center text-white shadow-lg relative transition-all transform duration-300">
+                <span class="text-xs font-semibold uppercase tracking-wider text-emerald-200 bg-white/10 px-3 py-1 rounded-full border border-white/20">
+                    Pilih Kelompok Yang Benar Untuk Kata Berikut:
+                </span>
+                <div id="current-arabic-word" class="arabic-text text-5xl sm:text-6xl font-bold my-4 text-amber-200 drop-shadow-md">
+                    اَلرَّحْمٰنُ
+                </div>
+                <div id="current-latin-word" class="text-base text-emerald-100 font-medium">
+                    ( Ar-Rahmaanu )
+                </div>
+            </div>
+
+            <!-- Target Baskets (Touch/Click Buttons) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <!-- Basket Qomariyah -->
+                <button onclick="submitSortAnswer('qomariyah')" class="group p-6 bg-gradient-to-b from-sky-50 to-sky-100 hover:from-sky-100 hover:to-sky-200 rounded-3xl border-3 border-sky-300 shadow-md hover:shadow-xl transition transform active:scale-95 text-left flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-16 h-16 rounded-2xl bg-sky-500 group-hover:scale-110 text-white flex items-center justify-center text-3xl shadow-md transition">
+                            <i class="fa-solid fa-moon"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-extrabold text-sky-950">Alif Lam Qomariyah</h3>
+                            <p class="text-xs text-sky-800">Lam Dibaca Jelas (Sukoon ْ )</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-circle-arrow-right text-2xl text-sky-600 group-hover:translate-x-1 transition"></i>
+                </button>
+
+                <!-- Basket Syamsiyah -->
+                <button onclick="submitSortAnswer('syamsiyah')" class="group p-6 bg-gradient-to-b from-amber-50 to-amber-100 hover:from-amber-100 hover:to-amber-200 rounded-3xl border-3 border-amber-300 shadow-md hover:shadow-xl transition transform active:scale-95 text-left flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-16 h-16 rounded-2xl bg-amber-500 group-hover:scale-110 text-white flex items-center justify-center text-3xl shadow-md transition">
+                            <i class="fa-solid fa-sun"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-extrabold text-amber-950">Alif Lam Syamsiyah</h3>
+                            <p class="text-xs text-amber-800">Lam Dilebur / Bertasydid ( ّ )</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-circle-arrow-right text-2xl text-amber-600 group-hover:translate-x-1 transition"></i>
+                </button>
+            </div>
+
+            <!-- Feedback Message Banner -->
+            <div id="game-feedback" class="hidden rounded-2xl p-4 text-center font-bold text-sm transition"></div>
+        </section>
+
+        <!-- ================= TAB 5: KUIS EVALUASI ================= -->
+        <section id="content-kuis" class="tab-content space-y-6 hidden">
+            <!-- Quiz Card Shell -->
+            <div class="bg-white rounded-3xl shadow-md border border-slate-200 overflow-hidden">
+                <!-- Quiz Progress Bar -->
+                <div class="bg-slate-100 h-3 w-full">
+                    <div id="quiz-progress" class="bg-emerald-500 h-full w-1/5 transition-all duration-300"></div>
+                </div>
+
+                <div class="p-6 sm:p-8 space-y-6">
+                    <!-- Quiz Header info -->
+                    <div class="flex items-center justify-between text-xs sm:text-sm font-semibold text-slate-500">
+                        <span id="quiz-step-indicator">Soal 1 dari 5</span>
+                        <span class="px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full font-bold">Pilihan Ganda</span>
+                    </div>
+
+                    <!-- Question Box -->
+                    <div class="space-y-4">
+                        <h3 id="quiz-question-text" class="text-lg sm:text-xl font-bold text-slate-800 leading-snug">
+                            Manakah dari kata berikut yang termasuk contoh bacaan **Alif Lam Qomariyah**?
+                        </h3>
+                        <div id="quiz-arabic-context" class="arabic-text text-3xl text-center py-4 bg-emerald-50/50 rounded-2xl border border-emerald-100 text-emerald-900 font-bold hidden">
+                        </div>
+                    </div>
+
+                    <!-- Options Container -->
+                    <div id="quiz-options-container" class="grid grid-cols-1 gap-3">
+                        <!-- Dynamically Generated Option Buttons -->
+                    </div>
+
+                    <!-- Quiz Explanation Box -->
+                    <div id="quiz-explanation" class="hidden p-4 rounded-2xl bg-slate-100 border border-slate-200 text-sm text-slate-700">
+                        <strong class="text-slate-900 block mb-1">Penjelasan:</strong>
+                        <span id="quiz-explanation-text"></span>
+                    </div>
+
+                    <!-- Next Button -->
+                    <div class="flex justify-end pt-2">
+                        <button id="quiz-next-btn" onclick="nextQuizQuestion()" class="hidden px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-md transition flex items-center gap-2">
+                            <span>Soal Berikutnya</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Result Card (Hidden by default) -->
+            <div id="quiz-result-card" class="hidden bg-white rounded-3xl p-8 text-center shadow-lg border border-slate-200 space-y-6">
+                <div class="w-20 h-20 bg-amber-100 text-amber-500 rounded-full flex items-center justify-center text-4xl mx-auto shadow-inner">
+                    <i class="fa-solid fa-trophy"></i>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-extrabold text-slate-800">Kuis Selesai!</h3>
+                    <p class="text-sm text-slate-600 mt-1">Berikut adalah hasil capaian evaluasi kamu:</p>
+                </div>
+
+                <div class="bg-slate-50 max-w-sm mx-auto p-6 rounded-2xl border border-slate-200">
+                    <span class="text-xs text-slate-500 uppercase tracking-wider block font-bold">Skor Akhir Kamu</span>
+                    <span id="final-score-text" class="text-5xl font-black text-emerald-600 my-2 block">100</span>
+                    <p id="final-motivation-text" class="text-xs text-slate-600 font-medium">Masya Allah! Pemahaman tajwidmu luar biasa!</p>
+                </div>
+
+                <button onclick="resetQuiz()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-md transition inline-flex items-center gap-2">
+                    <i class="fa-solid fa-rotate-right"></i>
+                    <span>Coba Kuis Lagi</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= TAB 6: ANALISIS AYAT AL-QUR'AN ================= -->
+        <section id="content-quran" class="tab-content space-y-6 hidden">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/80">
+                <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2 mb-2">
+                    <i class="fa-solid fa-quran text-emerald-600"></i>
+                    <span>Latihan Analisis Hukum Bacaan dalam Surat Al-Fatihah</span>
+                </h2>
+                <p class="text-sm text-slate-600">
+                    Klik atau sentuh kata yang diberi garis bawah berwarna untuk mengetahui analisis hukum tajwid Alif Lam-nya!
+                </p>
+            </div>
+
+            <!-- Verse Explorer Card -->
+            <div class="bg-emerald-950 text-white rounded-3xl p-6 sm:p-10 shadow-xl space-y-8 relative overflow-hidden">
+                <div class="text-center border-b border-emerald-800/80 pb-4">
+                    <h3 class="text-lg font-bold text-amber-300">Surat Al-Fatihah (الفاتحة)</h3>
+                    <p class="text-xs text-emerald-300/80">Temukan contoh Alif Lam Syamsiyah dan Qomariyah</p>
+                </div>
+
+                <!-- Interactive Verses list -->
+                <div class="space-y-6 text-right font-arabic">
+                    <!-- Verse 1 -->
+                    <div class="bg-emerald-900/40 p-4 rounded-2xl border border-emerald-800/50 flex flex-wrap items-center justify-end gap-3 text-2xl sm:text-3xl leading-loose">
+                        <span>بِسْمِ ٱللَّهِ</span>
+                        <button onclick="analyzeVerseWord('الرَّحْمَٰنِ', 'syamsiyah', 'Alif Lam Syamsiyah - Terdapat tasydid pada huruf Ra (ر)')" class="bg-amber-500/20 text-amber-300 hover:bg-amber-500/40 px-3 py-1 rounded-xl border border-amber-400/40 transition">ٱلرَّحْمَٰنِ</button>
+                        <button onclick="analyzeVerseWord('الرَّحِيمِ', 'syamsiyah', 'Alif Lam Syamsiyah - Terdapat tasydid pada huruf Ra (ر)')" class="bg-amber-500/20 text-amber-300 hover:bg-amber-500/40 px-3 py-1 rounded-xl border border-amber-400/40 transition">ٱلرَّحِيمِ</button>
+                        <span class="text-xs bg-amber-400 text-emerald-950 px-2.5 py-1 rounded-full font-sans font-bold">١</span>
+                    </div>
+
+                    <!-- Verse 2 -->
+                    <div class="bg-emerald-900/40 p-4 rounded-2xl border border-emerald-800/50 flex flex-wrap items-center justify-end gap-3 text-2xl sm:text-3xl leading-loose">
+                        <button onclick="analyzeVerseWord('ٱلْحَمْدُ', 'qomariyah', 'Alif Lam Qomariyah - Huruf Lam bertanda sukun dan diikuti huruf Ha (ح)')" class="bg-sky-500/20 text-sky-300 hover:bg-sky-500/40 px-3 py-1 rounded-xl border border-sky-400/40 transition">ٱلْحَمْدُ</button>
+                        <span>لِلَّهِ رَبِّ</span>
+                        <button onclick="analyzeVerseWord('ٱلْعَٰلَمِينَ', 'qomariyah', 'Alif Lam Qomariyah - Huruf Lam bertanda sukun dan diikuti huruf Ain (ع)')" class="bg-sky-500/20 text-sky-300 hover:bg-sky-500/40 px-3 py-1 rounded-xl border border-sky-400/40 transition">ٱلْعَٰلَمِينَ</button>
+                        <span class="text-xs bg-amber-400 text-emerald-950 px-2.5 py-1 rounded-full font-sans font-bold">٢</span>
+                    </div>
+
+                    <!-- Verse 4 -->
+                    <div class="bg-emerald-900/40 p-4 rounded-2xl border border-emerald-800/50 flex flex-wrap items-center justify-end gap-3 text-2xl sm:text-3xl leading-loose">
+                        <span>مَٰلِكِ يَوْمِ</span>
+                        <button onclick="analyzeVerseWord('ٱلدِّينِ', 'syamsiyah', 'Alif Lam Syamsiyah - Terdapat tasydid pada huruf Dal (د)')" class="bg-amber-500/20 text-amber-300 hover:bg-amber-500/40 px-3 py-1 rounded-xl border border-amber-400/40 transition">ٱلدِّينِ</button>
+                        <span class="text-xs bg-amber-400 text-emerald-950 px-2.5 py-1 rounded-full font-sans font-bold">٤</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Verse Analysis Modal / Box -->
+            <div id="verse-analysis-box" class="hidden bg-white rounded-2xl p-6 shadow-md border-2 border-emerald-500 transition-all">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <span id="verse-badge-type" class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-sky-100 text-sky-800">
+                            Analisis Tajwid
+                        </span>
+                        <h4 id="verse-word-title" class="arabic-text text-4xl font-bold text-slate-800 my-2">ٱلْحَمْدُ</h4>
+                        <p id="verse-explanation" class="text-sm text-slate-600">Alif Lam Qomariyah - Huruf Lam bertanda sukun dan diikuti huruf Ha (ح)</p>
+                    </div>
+                    <button onclick="document.getElementById('verse-analysis-box').classList.add('hidden')" class="text-slate-400 hover:text-slate-600">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-6 border-t border-slate-800 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 text-center space-y-2">
+            <p class="font-medium text-slate-300">Media Pembelajaran Interaktif PAI & Budi Pekerti - SMP Kelas 7</p>
+            <p>Materi: Hukum Bacaan Alif Lam Syamsiyah dan Alif Lam Qomariyah</p>
+            <p class="text-slate-500">Dirancang responsif untuk Laptop, Papan Interaktif Digital (PID), HP, dan Proyektor.</p>
+        </div>
+    </footer>
+
+    <!-- Application Logic Javascript -->
+    <script>
+        // State variables
+        let soundEnabled = true;
+
+        // Hijaiyah Dataset (28 letters)
+        const hijaiyahData = [
+            { letter: 'ا', name: 'Alif / Hamzah', type: 'qomariyah', latin: 'Al-Ardhu', arabic: 'اَلْأَرْضُ', desc: 'Lam dibaca jelas (Sukun) saat bertemu Alif/Hamzah.' },
+            { letter: 'ب', name: 'Ba', type: 'qomariyah', latin: 'Al-Baqaru', arabic: 'اَلْبَقَرَةُ', desc: 'Lam dibaca jelas (Sukun) saat bertemu Ba.' },
+            { letter: 'ت', name: 'Ta', type: 'syamsiyah', latin: 'At-Tiinu', arabic: 'اَلتِّيْنُ', desc: 'Lam dilebur ke huruf Ta yang bertasydid.' },
+            { letter: 'ث', name: 'Tsa', type: 'syamsiyah', latin: 'Ats-Tsamaru', arabic: 'اَلثَّمَرُ', desc: 'Lam dilebur ke huruf Tsa yang bertasydid.' },
+            { letter: 'ج', name: 'Jim', type: 'qomariyah', latin: 'Al-Jannatu', arabic: 'اَلْجَنَّةُ', desc: 'Lam dibaca jelas (Sukun) saat bertemu Jim.' },
+            { letter: 'ح', name: 'Ha', type: 'qomariyah', latin: 'Al-Hamdu', arabic: 'اَلْحَمْدُ', desc: 'Lam dibaca jelas (Sukun) saat bertemu Ha.' },
+            { letter: 'خ', name: 'Kho', type: 'qomariyah', latin: 'Al-Khabeeru', arabic: 'اَلْخَبِيْرُ', desc: 'Lam dibaca jelas (Sukun) saat bertemu Kho.' },
+            { letter: 'د', name: 'Dal', type: 'syamsiyah', latin: 'Ad-Du\'aa-u', arabic: 'اَلدُّعَاءُ', desc: 'Lam dilebur ke huruf Dal yang bertasydid.' },
+            { letter: 'ذ', name: 'Dzal', type: 'syamsiyah', latin: 'Adz-Dzikru', arabic: 'اَلذِّكْرُ', desc: 'Lam dilebur ke huruf Dzal yang bertasydid.' },
+            { letter: 'ر', name: 'Ro', type: 'syamsiyah', latin: 'Ar-Rahmaanu', arabic: 'اَلرَّحْمٰنُ', desc: 'Lam dilebur ke huruf Ro yang bertasydid.' },
+            { letter: 'ز', name: 'Zai', type: 'syamsiyah', latin: 'Az-Zaytunu', arabic: 'اَلزَّيْتُوْنُ', desc: 'Lam dilebur ke huruf Zai yang bertasydid.' },
+            { letter: 'س', name: 'Sin', type: 'syamsiyah', latin: 'As-Samaa-u', arabic: 'اَلسَّمَاءُ', desc: 'Lam dilebur ke huruf Sin yang bertasydid.' },
+            { letter: 'ش', name: 'Syin', type: 'syamsiyah', latin: 'Ash-Shamsu', arabic: 'اَلشَّمْسُ', desc: 'Lam dilebur ke huruf Syin yang bertasydid.' },
+            { letter: 'ص', name: 'Shod', type: 'syamsiyah', latin: 'Ash-Shalaatu', arabic: 'اَلصَّلَاةُ', desc: 'Lam dilebur ke huruf Shod yang bertasydid.' },
+            { letter: 'ض', name: 'Dhod', type: 'syamsiyah', latin: 'Adh-Dhuhaa', arabic: 'اَلضُّحٰى', desc: 'Lam dilebur ke huruf Dhod yang bertasydid.' },
+            { letter: 'ط', name: 'Tho', type: 'syamsiyah', latin: 'At-Tho\'amu', arabic: 'اَلطَّعَامُ', desc: 'Lam dilebur ke huruf Tho yang bertasydid.' },
+            { letter: 'ظ', name: 'Zho', type: 'syamsiyah', latin: 'Azh-Zhulumatu', arabic: 'اَلظُّلُمَاتُ', desc: 'Lam dilebur ke huruf Zho yang bertasydid.' },
+            { letter: 'ع', name: 'Ain', type: 'qomariyah', latin: 'Al-\'Aleemu', arabic: 'اَلْعَلِيْمُ', desc: 'Lam dibaca jelas (Sukun) saat bertemu Ain.' },
+            { letter: 'غ', name: 'Ghoin', type: 'qomariyah', latin: 'Al-Ghafooru', arabic: 'اَلْغَفُوْرُ', desc: 'Lam dibaca jelas (Sukun) saat bertemu Ghoin.' },
+            { letter: 'ف', name: 'Fa', type: 'qomariyah', latin: 'Al-Fiilu', arabic: 'اَلْفِيْلُ', desc: 'Lam dibaca jelas (Sukun) saat bertemu Fa.' },
+            { letter: 'ق', name: 'Qof', type: 'qomariyah', latin: 'Al-Qamaru', arabic: 'اَلْقَمَرُ', desc: 'Lam dibaca jelas (Sukun) saat bertemu Qof.' },
+            { letter: 'ك', name: 'Kaf', type: 'qomariyah', latin: 'Al-Kitabu', arabic: 'اَلْكِتَابُ', desc: 'Lam dibaca jelas (Sukun) saat bertemu Kaf.' },
+            { letter: 'ل', name: 'Lam', type: 'syamsiyah', latin: 'Al-Laylu', arabic: 'اَلَّيْلُ', desc: 'Lam dilebur ke huruf Lam berikutnya.' },
+            { letter: 'م', name: 'Mim', type: 'qomariyah', latin: 'Al-Mawtu', arabic: 'اَلْمَوْتُ', desc: 'Lam dibaca jelas (Sukun) saat bertemu Mim.' },
+            { letter: 'ن', name: 'Nun', type: 'syamsiyah', latin: 'An-Naasu', arabic: 'اَلنَّاسُ', desc: 'Lam dilebur ke huruf Nun yang bertasydid.' },
+            { letter: 'و', name: 'Wawu', type: 'qomariyah', latin: 'Al-Wardatu', arabic: 'اَلْوَرْدَةُ', desc: 'Lam dibaca jelas (Sukun) saat bertemu Wawu.' },
+            { letter: 'هـ', name: 'Ha\'', type: 'qomariyah', latin: 'Al-Hudaa', arabic: 'اَلْهُدٰى', desc: 'Lam dibaca jelas (Sukun) saat bertemu Ha\'.' },
+            { letter: 'ي', name: 'Ya', type: 'qomariyah', latin: 'Al-Yawmu', arabic: 'اَلْيَوْمُ', desc: 'Lam dibaca jelas (Sukun) saat bertemu Ya.' }
+        ];
+
+        // Sorting Game Dataset
+        const sortingDataPool = [
+            { arabic: 'اَلْقَمَرُ', latin: 'Al-Qamaru', type: 'qomariyah' },
+            { arabic: 'اَلشَّمْسُ', latin: 'Ash-Shamsu', type: 'syamsiyah' },
+            { arabic: 'اَلْكِتَابُ', latin: 'Al-Kitabu', type: 'qomariyah' },
+            { arabic: 'اَلنَّاسُ', latin: 'An-Nasu', type: 'syamsiyah' },
+            { arabic: 'اَلْحَمْدُ', latin: 'Al-Hamdu', type: 'qomariyah' },
+            { arabic: 'اَلرَّحْمٰنُ', latin: 'Ar-Rahmanu', type: 'syamsiyah' },
+            { arabic: 'اَلْفَلَقُ', latin: 'Al-Falaqu', type: 'qomariyah' },
+            { arabic: 'اَلتِّيْنُ', latin: 'At-Tiinu', type: 'syamsiyah' }
+        ];
+
+        let sortingGameList = [];
+        let sortingIndex = 0;
+        let sortingScore = 0;
+
+        // Quiz Dataset
+        const quizQuestions = [
+            {
+                question: "Hukum bacaan Alif Lam (ال) terbagi menjadi dua kelompok, yaitu...",
+                options: [
+                    "Alif Lam Izhar dan Alif Lam Ikhfa",
+                    "Alif Lam Syamsiyah dan Alif Lam Qomariyah",
+                    "Alif Lam Mad dan Alif Lam Qashar",
+                    "Alif Lam Tafkhim dan Alif Lam Tarqiq"
+                ],
+                correct: 1,
+                explanation: "Hukum Alif Lam (Al-Ta'rif) dibagi 2: Alif Lam Syamsiyah (Idgham Syamsi) dan Alif Lam Qomariyah (Idzhar Qomari)."
+            },
+            {
+                question: "Kata 'Qomariyah' berasal dari kata 'Qomar' (قَمَر) yang artinya...",
+                options: [
+                    "Matahari",
+                    "Bintang",
+                    "Bulan",
+                    "Awan"
+                ],
+                correct: 2,
+                explanation: "Qomar artinya Bulan. Pada Alif Lam Qomariyah, huruf Lam dibaca jelas seperti melihat bintang di samping bulan."
+            },
+            {
+                question: "Ciri utama penulisan Alif Lam Syamsiyah dalam mushaf Al-Qur'an adalah...",
+                options: [
+                    "Huruf Lam bertanda sukun ( ْ )",
+                    "Huruf setelah Lam memiliki tanda Tasydid / Shaddah ( ّ )",
+                    "Huruf Lam dibaca panjang 2 harakat",
+                    "Huruf Lam tidak dituliskan sama sekali"
+                ],
+                correct: 1,
+                explanation: "Pada Alif Lam Syamsiyah, Lam dileburkan sehingga huruf di depannya ber-tasydid ( ّ )."
+            },
+            {
+                question: "Manakah di bawah ini yang merupakan contoh bacaan Alif Lam Qomariyah?",
+                options: [
+                    "اَلسَّمَاءُ (As-Samaa-u)",
+                    "اَلرَّحِيْمُ (Ar-Rahiimu)",
+                    "اَلْكِتَابُ (Al-Kitabu)",
+                    "اَلنَّاسُ (An-Naasu)"
+                ],
+                correct: 2,
+                explanation: "اَلْكِتَابُ (Al-Kitabu) adalah Alif Lam Qomariyah karena huruf Lam berharakat sukun dan dibaca jelas."
+            },
+            {
+                question: "Berapakah jumlah huruf Alif Lam Syamsiyah?",
+                options: [
+                    "10 Huruf",
+                    "12 Huruf",
+                    "14 Huruf",
+                    "28 Huruf"
+                ],
+                correct: 2,
+                explanation: "28 Huruf Hijaiyah dibagi dua rata: 14 Huruf Qomariyah dan 14 Huruf Syamsiyah."
+            }
+        ];
+
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+
+        // Navigation Tab Switcher
+        function switchTab(tabId) {
+            if (soundEnabled) SoundFX.playClick();
+
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-tab').forEach(el => {
+                el.classList.remove('bg-emerald-800/80', 'text-white', 'border-amber-400');
+                el.classList.add('border-transparent', 'text-emerald-100');
+            });
+
+            const activeTab = document.getElementById(`tab-${tabId}`);
+            const activeContent = document.getElementById(`content-${tabId}`);
+
+            if (activeContent && activeTab) {
+                activeContent.classList.remove('hidden');
+                activeTab.classList.add('bg-emerald-800/80', 'text-white', 'border-amber-400');
+                activeTab.classList.remove('border-transparent', 'text-emerald-100');
+            }
+        }
+
+        // Toggle Sound Effects
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const soundIcon = document.getElementById('soundIcon');
+            const soundText = document.getElementById('soundText');
+            if (soundEnabled) {
+                soundIcon.className = 'fa-solid fa-volume-high';
+                soundText.innerText = 'Suara: On';
+            } else {
+                soundIcon.className = 'fa-solid fa-volume-xmark';
+                soundText.innerText = 'Suara: Off';
+            }
+        }
+
+        // Toggle Full Screen
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {});
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        // Render Hijaiyah Grid
+        function renderHijaiyahGrid(filter = 'all') {
+            const grid = document.getElementById('hijaiyah-grid');
+            grid.innerHTML = '';
+
+            hijaiyahData.forEach((item, idx) => {
+                if (filter !== 'all' && item.type !== filter) return;
+
+                const btn = document.createElement('button');
+                const isQomariyah = item.type === 'qomariyah';
+
+                btn.className = `p-3 rounded-2xl font-arabic text-2xl sm:text-3xl font-bold transition transform active:scale-90 flex flex-col items-center justify-center shadow-xs ${
+                    isQomariyah 
+                        ? 'bg-sky-100 hover:bg-sky-200 text-sky-900 border border-sky-300' 
+                        : 'bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300'
+                }`;
+
+                btn.innerHTML = `
+                    <span>${item.letter}</span>
+                    <span class="text-[10px] font-sans font-semibold mt-1 opacity-75">${item.name}</span>
+                `;
+
+                btn.onclick = () => selectLetterDetail(idx);
+                grid.appendChild(btn);
+            });
+        }
+
+        function filterLetters(type) {
+            if (soundEnabled) SoundFX.playClick();
+            ['all', 'qomariyah', 'syamsiyah'].forEach(t => {
+                const btn = document.getElementById(`btn-filter-${t}`);
+                if (t === type) {
+                    btn.className = 'px-3 py-1.5 text-xs font-semibold rounded-lg bg-white shadow-xs text-slate-800 transition border border-slate-200';
+                } else {
+                    btn.className = 'px-3 py-1.5 text-xs font-semibold rounded-lg text-slate-600 hover:bg-white/60 transition';
+                }
+            });
+            renderHijaiyahGrid(type);
+        }
+
+        function selectLetterDetail(index) {
+            if (soundEnabled) SoundFX.playClick();
+            const item = hijaiyahData[index];
+            const detailBadge = document.getElementById('detail-letter-badge');
+            const nameEl = document.getElementById('detail-letter-name');
+            const typeBadge = document.getElementById('detail-type-badge');
+            const descEl = document.getElementById('detail-description');
+            const arabicEx = document.getElementById('detail-arabic-example');
+            const latinEx = document.getElementById('detail-latin-example');
+
+            detailBadge.innerText = item.letter;
+            nameEl.innerText = `Huruf ${item.name} (${item.letter})`;
+            descEl.innerText = item.desc;
+            arabicEx.innerText = item.arabic;
+            latinEx.innerText = item.latin;
+
+            if (item.type === 'qomariyah') {
+                detailBadge.className = 'w-24 h-24 rounded-2xl bg-sky-500 text-white flex items-center justify-center font-arabic text-6xl shadow-lg flex-shrink-0';
+                typeBadge.className = 'px-3 py-1 bg-sky-100 text-sky-800 font-bold text-xs rounded-full border border-sky-300';
+                typeBadge.innerText = 'Alif Lam Qomariyah (Dibaca Jelas)';
+            } else {
+                detailBadge.className = 'w-24 h-24 rounded-2xl bg-amber-500 text-white flex items-center justify-center font-arabic text-6xl shadow-lg flex-shrink-0';
+                typeBadge.className = 'px-3 py-1 bg-amber-100 text-amber-800 font-bold text-xs rounded-full border border-amber-300';
+                typeBadge.innerText = 'Alif Lam Syamsiyah (Dilebur)';
+            }
+        }
+
+        // Sorting Game Logic
+        function initSortingGame() {
+            sortingGameList = [...sortingDataPool].sort(() => Math.random() - 0.5);
+            sortingIndex = 0;
+            sortingScore = 0;
+            updateSortingUI();
+        }
+
+        function updateSortingUI() {
+            document.getElementById('game-score').innerText = sortingScore;
+            document.getElementById('game-remaining').innerText = sortingGameList.length - sortingIndex;
+            const feedback = document.getElementById('game-feedback');
+            feedback.classList.add('hidden');
+
+            if (sortingIndex < sortingGameList.length) {
+                const current = sortingGameList[sortingIndex];
+                document.getElementById('current-arabic-word').innerText = current.arabic;
+                document.getElementById('current-latin-word').innerText = `( ${current.latin} )`;
+            } else {
+                // Game Finished
+                document.getElementById('active-word-card').innerHTML = `
+                    <div class="py-6 space-y-3">
+                        <i class="fa-solid fa-circle-check text-5xl text-amber-300"></i>
+                        <h3 class="text-2xl font-bold">Luar Biasa! Semua Kata Selesai Disortir!</h3>
+                        <p class="text-sm text-emerald-100">Skor Akhir Kamu: <strong class="text-amber-300 text-xl">${sortingScore} / ${sortingGameList.length * 10}</strong></p>
+                        <button onclick="resetSortingGame()" class="px-6 py-2.5 bg-amber-400 text-emerald-950 font-bold rounded-xl shadow-md hover:bg-amber-300 transition">Main Lagi</button>
+                    </div>
+                `;
+            }
+        }
+
+        function submitSortAnswer(selectedType) {
+            if (sortingIndex >= sortingGameList.length) return;
+            const current = sortingGameList[sortingIndex];
+            const feedback = document.getElementById('game-feedback');
+            feedback.classList.remove('hidden');
+
+            if (selectedType === current.type) {
+                if (soundEnabled) SoundFX.playCorrect();
+                sortingScore += 10;
+                feedback.className = 'rounded-2xl p-4 text-center font-bold text-sm bg-emerald-100 text-emerald-800 border border-emerald-300';
+                feedback.innerHTML = `<i class="fa-solid fa-circle-check"></i> Benar! Kata "${current.arabic}" adalah Alif Lam ${current.type.toUpperCase()}`;
+            } else {
+                if (soundEnabled) SoundFX.playWrong();
+                feedback.className = 'rounded-2xl p-4 text-center font-bold text-sm bg-rose-100 text-rose-800 border border-rose-300';
+                feedback.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> Kurang Tepat! Kata "${current.arabic}" seharusnya Alif Lam ${current.type.toUpperCase()}`;
+            }
+
+            sortingIndex++;
+            setTimeout(() => {
+                updateSortingUI();
+            }, 1200);
+        }
+
+        function resetSortingGame() {
+            if (soundEnabled) SoundFX.playClick();
+            document.getElementById('active-word-card').innerHTML = `
+                <span class="text-xs font-semibold uppercase tracking-wider text-emerald-200 bg-white/10 px-3 py-1 rounded-full border border-white/20">
+                    Pilih Kelompok Yang Benar Untuk Kata Berikut:
+                </span>
+                <div id="current-arabic-word" class="arabic-text text-5xl sm:text-6xl font-bold my-4 text-amber-200 drop-shadow-md"></div>
+                <div id="current-latin-word" class="text-base text-emerald-100 font-medium"></div>
+            `;
+            initSortingGame();
+        }
+
+        // Quiz Logic
+        function renderQuizQuestion() {
+            const q = quizQuestions[currentQuizIndex];
+            document.getElementById('quiz-step-indicator').innerText = `Soal ${currentQuizIndex + 1} dari ${quizQuestions.length}`;
+            document.getElementById('quiz-progress').style.width = `${((currentQuizIndex + 1) / quizQuestions.length) * 100}%`;
+            document.getElementById('quiz-question-text').innerText = q.question;
+
+            const optionsContainer = document.getElementById('quiz-options-container');
+            optionsContainer.innerHTML = '';
+            document.getElementById('quiz-explanation').classList.add('hidden');
+            document.getElementById('quiz-next-btn').classList.add('hidden');
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full p-4 rounded-xl border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/50 text-left transition flex items-center justify-between font-medium text-slate-700 active:scale-98';
+                btn.innerHTML = `
+                    <span>${opt}</span>
+                    <i class="fa-regular fa-circle text-slate-400"></i>
+                `;
+                btn.onclick = () => checkQuizAnswer(idx, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkQuizAnswer(selectedIndex, btnElement) {
+            const q = quizQuestions[currentQuizIndex];
+            const optionsContainer = document.getElementById('quiz-options-container');
+            const buttons = optionsContainer.querySelectorAll('button');
+
+            // Disable all buttons
+            buttons.forEach(b => b.disabled = true);
+
+            if (selectedIndex === q.correct) {
+                if (soundEnabled) SoundFX.playCorrect();
+                quizScore += 20;
+                btnElement.className = 'w-full p-4 rounded-xl border-2 border-emerald-500 bg-emerald-100 text-emerald-900 font-bold flex items-center justify-between';
+                btnElement.querySelector('i').className = 'fa-solid fa-circle-check text-emerald-600 text-lg';
+            } else {
+                if (soundEnabled) SoundFX.playWrong();
+                btnElement.className = 'w-full p-4 rounded-xl border-2 border-rose-500 bg-rose-100 text-rose-900 font-bold flex items-center justify-between';
+                btnElement.querySelector('i').className = 'fa-solid fa-circle-xmark text-rose-600 text-lg';
+
+                // Highlight correct one
+                buttons[q.correct].className = 'w-full p-4 rounded-xl border-2 border-emerald-500 bg-emerald-50 text-emerald-900 font-bold flex items-center justify-between';
+            }
+
+            // Show explanation
+            const expBox = document.getElementById('quiz-explanation');
+            document.getElementById('quiz-explanation-text').innerText = q.explanation;
+            expBox.classList.remove('hidden');
+
+            // Show Next Button
+            document.getElementById('quiz-next-btn').classList.remove('hidden');
+        }
+
+        function nextQuizQuestion() {
+            if (soundEnabled) SoundFX.playClick();
+            currentQuizIndex++;
+            if (currentQuizIndex < quizQuestions.length) {
+                renderQuizQuestion();
+            } else {
+                showQuizResults();
+            }
+        }
+
+        function showQuizResults() {
+            document.querySelector('#content-kuis .bg-white.rounded-3xl').classList.add('hidden');
+            const resultCard = document.getElementById('quiz-result-card');
+            resultCard.classList.remove('hidden');
+
+            document.getElementById('final-score-text').innerText = quizScore;
+            const motivation = document.getElementById('final-motivation-text');
+
+            if (quizScore >= 80) {
+                motivation.innerText = "Masya Allah! Pemahaman tajwidmu luar biasa!";
+            } else if (quizScore >= 60) {
+                motivation.innerText = "Bagus! Teruskan berlatih agar makin fasih membaca Al-Qur'an.";
+            } else {
+                motivation.innerText = "Tetap semangat! Pelajari kembali materi dan eksplorasi huruf di menu sebelumnya.";
+            }
+        }
+
+        function resetQuiz() {
+            if (soundEnabled) SoundFX.playClick();
+            currentQuizIndex = 0;
+            quizScore = 0;
+            document.querySelector('#content-kuis .bg-white.rounded-3xl').classList.remove('hidden');
+            document.getElementById('quiz-result-card').classList.add('hidden');
+            renderQuizQuestion();
+        }
+
+        // Verse analysis popup function
+        function analyzeVerseWord(word, type, exp) {
+            if (soundEnabled) SoundFX.playClick();
+            const box = document.getElementById('verse-analysis-box');
+            const badge = document.getElementById('verse-badge-type');
+            const wordTitle = document.getElementById('verse-word-title');
+            const explanation = document.getElementById('verse-explanation');
+
+            wordTitle.innerText = word;
+            explanation.innerText = exp;
+
+            if (type === 'qomariyah') {
+                badge.innerText = 'Alif Lam Qomariyah (Idzhar Qomari)';
+                badge.className = 'px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-sky-100 text-sky-800 border border-sky-300';
+            } else {
+                badge.innerText = 'Alif Lam Syamsiyah (Idgham Syamsi)';
+                badge.className = 'px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-100 text-amber-800 border border-amber-300';
+            }
+
+            box.classList.remove('hidden');
+        }
+
+        // Initialize App on Page Load
+        window.onload = function() {
+            switchTab('beranda');
+            renderHijaiyahGrid();
+            selectLetterDetail(0);
+            initSortingGame();
+            renderQuizQuestion();
+        };
+    </script>
+</body>
+</html>
